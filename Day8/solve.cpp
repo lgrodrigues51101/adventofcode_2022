@@ -40,51 +40,81 @@ int main()
     //     cout << endl;
     // }
 
-    int v_trees = l * 2 + c * 2 - 4;
+    int scenic_score, l_score, r_score, t_score, b_score;
+
+    int final_s_score = 0;
 
     for (size_t i = 1; i < l - 1; i++)
     {
         for (size_t j = 1; j < c - 1; j++)
         {
-            bool visible = true;
-            for (size_t w = 0; w < j; w++) // check left
+            scenic_score = 0;
+            l_score = 0;
+            r_score = 0;
+            t_score = 0;
+            b_score = 0;
+
+            // cout << "(" << i << "," << j << ")" << endl;
+            for (int w = j - 1; w >= 0; w--) // check left
             {
                 // cout << grid[i][j] << " " << grid[i][w] << endl;
-                visible = visible && grid[i][j] > grid[i][w];
-            }
-
-            if (!visible)
-            {
-                visible = true;
-                for (size_t w = j + 1; w < c; w++) // check right
+                if (grid[i][j] > grid[i][w])
                 {
-                    visible = visible && grid[i][j] > grid[i][w];
+                    l_score++;
+                }
+                else
+                {
+                    l_score++;
+                    break;
                 }
             }
+            // cout << "\tleft score : " << l_score << endl;
 
-            if (!visible)
+            for (int w = j + 1; w < c; w++) // check right
             {
-                visible = true;
-                for (size_t w = 0; w < i; w++) // check top
+                if (grid[i][j] > grid[i][w])
                 {
-                    visible = visible && grid[i][j] > grid[w][j];
+                    r_score++;
+                }
+                else
+                {
+                    r_score++;
+                    break;
                 }
             }
+            // cout << "\tright score : " << r_score << endl;
 
-            if (!visible)
+            for (int w = i-1; w >= 0; w--) // check top
             {
-                visible = true;
-                for (size_t w = i + 1; w < l; w++) // check bottom
+                if (grid[i][j] > grid[w][j])
                 {
-                    visible = visible && grid[i][j] > grid[w][j];
+                    t_score++;
+                }
+                else
+                {
+                    t_score++;
+                    break;
                 }
             }
+            // cout << "\ttop score : " << t_score << endl;
 
-            if (visible)
+            for (int w = i + 1; w < l; w++) // check bottom
             {
-                v_trees++;
+                if (grid[i][j] > grid[w][j])
+                {
+                    b_score++;
+                }
+                else
+                {
+                    b_score++;
+                    break;
+                }
             }
+            // cout << "\tbot score : " << b_score << endl;
+
+            scenic_score = l_score * r_score * t_score * b_score;
+            final_s_score =  scenic_score > final_s_score ? scenic_score : final_s_score;
         }
     }
-    cout << "Visible Trees : " << v_trees << endl;
+    cout << "Final score : " << final_s_score << endl;
 }
