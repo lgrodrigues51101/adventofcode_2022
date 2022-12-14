@@ -6,7 +6,7 @@ using namespace std;
 
 int cycle = 0;
 int X = 1;
-int sum_strenght = 0;
+string crt = "";
 
 vector<string> split(string str, string delimiter)
 {
@@ -24,15 +24,51 @@ vector<string> split(string str, string delimiter)
     return res;
 }
 
+void print_sprite()
+{
+    string s = "";
+    for (size_t i = 0; i < 40; i++)
+    {
+        s += '.';
+    }
+    if (X >= 0)
+    {
+        s[X] = '#';
+        if (X - 1 >= 0)
+        {
+            s[X - 1] = '#';
+        }
+        if (X + 1 < 40)
+        {
+            s[X + 1] = '#';
+        }
+    }
+    cout << "X value = " << X << endl;
+    cout << "Sprite position: " << s << endl;
+}
+
+void print_crt()
+{
+    cout << crt << endl;
+}
+
 void update_cycle()
 {
-    cycle++;
-    if (cycle == 20 || (cycle - 20) % 40 == 0)
+    int rest = cycle % 40;
+    if (rest == 0)
     {
-        int signal_s = cycle*X;
-        sum_strenght += signal_s;
-        cout << "(cycle " << cycle << ")Current signal strenght : " << signal_s << endl;
+        crt += '\n';
     }
+
+    if (rest == X || rest == X + 1 || rest == X - 1)
+    {
+        crt += '#';
+    }
+    else
+    {
+        crt += '.';
+    }
+    cycle++;
 }
 
 int main()
@@ -63,5 +99,5 @@ int main()
             X += add;
         }
     }
-    cout << sum_strenght << endl;
+    print_crt();
 }
